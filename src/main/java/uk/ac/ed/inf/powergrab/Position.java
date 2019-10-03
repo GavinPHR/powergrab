@@ -14,6 +14,7 @@ public class Position {
     }
     
     public Position nextPosition(Direction direction) {
+        if (direction == null) return this;
         return new Position(latitude + direction.getVertical(),
                             longitude + direction.getHorizontal());
     }
@@ -22,4 +23,9 @@ public class Position {
         return latitude > bottom && latitude < top && 
                longitude < right && longitude > left;
     }
+    
+//    public static void main(String[] args) {
+//        Position p = new Position(55.944425,-3.188396);
+//        System.out.println(p.nextPosition(null).latitude + "  " + p.nextPosition(Direction.SSE).longitude);
+//    }
 }
