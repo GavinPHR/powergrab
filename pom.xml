@@ -26,6 +26,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.harium.storage</groupId>
+      <artifactId>kdtree</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
   
   <build>
