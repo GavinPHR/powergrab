@@ -11,14 +11,20 @@ public class Position {
     private final double left = -3.192473;
     private final double right = -3.184319;
     
-    public static double distanceBetween(Position a, Position b) {
-        return Math.sqrt(Math.pow((a.latitude - b.latitude), 2)
-                       + Math.pow((a.longitude - b.longitude), 2));
+    public static boolean withinRange(Position a, Position b) {
+        double distance = Math.sqrt(Math.pow((a.latitude - b.latitude), 2)
+                        + Math.pow((a.longitude - b.longitude), 2));
+        return distance < 0.00025;
     }
     
     public Position(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+    
+    public Position(Position pos, double horizontalChange, double verticalChange) {
+        this.latitude = pos.latitude + verticalChange;
+        this.longitude = pos.longitude + horizontalChange;
     }
     
     public Position nextPosition(Direction direction) {

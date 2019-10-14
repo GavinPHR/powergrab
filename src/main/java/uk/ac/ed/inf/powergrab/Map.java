@@ -6,21 +6,7 @@ import com.harium.storage.kdtree.KDTree;
 import com.mapbox.geojson.*;
 
 public class Map {
-    private KDTree<Station> stations;
-    
-    // Station class instead of JSON, easier to deal with
-    private class Station {
-        Position pos;
-        boolean isPositive = true;
-        float coins;
-        float power;
-        private Station(Position pos, float coins, float power) {
-            this.pos = pos;
-            this.coins = coins;
-            this.power = power;
-            if (coins < 0 || power < 0) this.isPositive = false;
-        }
-    }
+    private KDTree<Station> stations;  
     
     public Map(String url) throws Exception {
         IO io = new IO();
