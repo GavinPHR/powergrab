@@ -5,10 +5,10 @@ import com.google.gson.JsonElement;
 import com.harium.storage.kdtree.KDTree;
 import com.mapbox.geojson.*;
 
-public class Map {
+public class GameMap {
     private KDTree<Station> stations;  
     
-    public Map(String url) throws Exception {
+    public GameMap(String url) throws Exception {
         IO io = new IO();
         String json = io.retrieveJson(url);
         this.stations = this.makeTree(this.jsonToStations(json));
@@ -68,7 +68,7 @@ public class Map {
     
     public static void main(String[] args) throws Exception {
         String url = "http://homepages.inf.ed.ac.uk/stg/powergrab/2019/01/01/powergrabmap.geojson";
-        Map m = new Map(url);
+        GameMap m = new GameMap(url);
         System.out.println("map done");
         Position p = new Position(55.94605783989288,-3.1842541694641113);
         Station n = m.nearestStation(p);

@@ -2,19 +2,21 @@ package uk.ac.ed.inf.powergrab;
 
 public abstract class Drone {
     Position currentPosition;
-    float coins, power;
-    final Map map;
+    float coins = 0, power = 250;
+    final GameMap map;
     int moveCount = 0;
     
-    public Drone(Position pos, float coins, float power, Map map) {
+    public Drone(Position pos, GameMap map) {
         // Initial pos from command
         this.currentPosition = pos;
-        this.coins = coins;
-        this.power = power;
         this.map = map;
     }
     
-    public boolean move(Direction d) {
+    public abstract Direction selectMove();
+    
+    public boolean move() {
+        System.out.println(currentPosition.latitude + " " + currentPosition.longitude + " "+ coins);
+        Direction d = selectMove();
         currentPosition.longitude+= d.getHorizontal();
         currentPosition.latitude += d.getVertical();
         charge();
