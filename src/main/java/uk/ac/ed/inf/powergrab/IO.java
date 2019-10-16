@@ -24,6 +24,12 @@ public class IO {
         }
         return new String(contentArray);
     }
+    
+    public void writeToFile(String content, String filename) throws UnsupportedEncodingException, FileNotFoundException {
+        PrintWriter writer = new PrintWriter(filename);
+        writer.println(content);
+        writer.close();
+    }
         
 //    public void writeOut;
     public static void main(String[] args) throws Exception {

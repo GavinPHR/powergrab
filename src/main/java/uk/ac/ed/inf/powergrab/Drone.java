@@ -20,7 +20,6 @@ public abstract class Drone {
         if (moveCount >= 250 || power < 1.25) return false;
         // Make log storage
         String[] logEntry = new String[7]; 
-        System.out.println(currentPosition.latitude + " " + currentPosition.longitude + " "+ coins + " " + power);
         Direction d = selectMove();
         logEntry[0] = Double.toString(currentPosition.latitude);
         logEntry[1] = Double.toString(currentPosition.longitude);

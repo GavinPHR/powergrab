@@ -1,4 +1,6 @@
 package uk.ac.ed.inf.powergrab;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,8 +28,8 @@ public class GameMap {
     }
     
     // currently using String for testing should be void
-    public String writeOut() {
-        IO io = new IO();
+    // write to txt not yet implemented
+    public void writeOut(String filename) throws UnsupportedEncodingException, FileNotFoundException {
         List<Point> points = new ArrayList<Point>(251);
         for (int i = 0; i < 251; i++) {
             Point p = Point.fromLngLat(longitudeHistory[i], latitudeHistory[i]);
@@ -35,7 +37,10 @@ public class GameMap {
         }
         LineString ls = LineString.fromLngLats(points);
         fs.add(Feature.fromGeometry(ls));
-        return FeatureCollection.fromFeatures(fs).toJson();
+        IO io = new IO();
+        io.writeToFile(FeatureCollection.fromFeatures(fs).toJson(), filename + ".geojson");
+        io.writeToFile(String.join("\n", mainLog), filename + ".txt");
+        return;
     }
     
     private Station[] jsonToStations(String json) {
