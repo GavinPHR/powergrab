@@ -8,7 +8,7 @@ import com.mapbox.geojson.*;
 
 public class GameMap {
     private KDTree<Station> stations;  
-    private String json;
+    private List<Feature> fs;
     public String[] mainLog = new String[250];
     public double[] longitudeHistory = new double[251];
     public double[] latitudeHistory = new double[251];
@@ -16,7 +16,7 @@ public class GameMap {
     
     public GameMap(String url) throws Exception {
         IO io = new IO();
-        this.json = io.retrieveJson(url);
+        String json = io.retrieveJson(url);
         this.stations = this.makeTree(this.jsonToStations(json));
     }
     
@@ -34,12 +34,13 @@ public class GameMap {
             points.add(p);
         }
         LineString ls = LineString.fromLngLats(points);
-        return ls.toJson();
+        fs.add(Feature.fromGeometry(ls));
+        return FeatureCollection.fromFeatures(fs).toJson();
     }
     
     private Station[] jsonToStations(String json) {
         FeatureCollection fc = FeatureCollection.fromJson(json);
-        List<Feature> fs = fc.features();
+        fs = fc.features();
         Iterator<Feature> iterator = fs.iterator();
         Station[] stations = new Station[50];
         int i = 0;
