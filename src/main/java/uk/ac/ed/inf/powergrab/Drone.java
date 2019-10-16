@@ -10,18 +10,33 @@ public abstract class Drone {
         // Initial pos from command
         this.currentPosition = pos;
         this.map = map;
+        map.longitudeHistory[0] = pos.longitude;
+        map.latitudeHistory[0] = pos.latitude;
     }
     
     public abstract Direction selectMove();
     
     public boolean move() {
-        System.out.println(currentPosition.latitude + " " + currentPosition.longitude + " "+ coins);
+        if (moveCount >= 250 || power < 1.25) return false;
+        // Make log storage
+        String[] logEntry = new String[7]; 
+        System.out.println(currentPosition.latitude + " " + currentPosition.longitude + " "+ coins + " " + power);
         Direction d = selectMove();
+        logEntry[0] = Double.toString(currentPosition.latitude);
+        logEntry[1] = Double.toString(currentPosition.longitude);
+        logEntry[2] = d.toString();
         currentPosition.longitude+= d.getHorizontal();
         currentPosition.latitude += d.getVertical();
+        logEntry[3] = Double.toString(currentPosition.latitude);
+        logEntry[4] = Double.toString(currentPosition.longitude);
+        power -= 1.25;
         charge();
+        logEntry[5] = Float.toString(coins);
+        logEntry[6] = Float.toString(power);
+        map.mainLog[moveCount] = String.join(",", logEntry);
         moveCount++;
-        if (moveCount >= 250 || power <= 0) return false;
+        map.longitudeHistory[moveCount] = currentPosition.longitude;
+        map.latitudeHistory[moveCount] = currentPosition.latitude;
         return true; 
     }
     

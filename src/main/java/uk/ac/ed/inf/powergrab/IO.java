@@ -25,6 +25,7 @@ public class IO {
         return new String(contentArray);
     }
         
+//    public void writeOut;
     public static void main(String[] args) throws Exception {
         String url = "http://homepages.inf.ed.ac.uk/stg/powergrab/2019/01/01/powergrabmap.geojson";
         IO m = new IO();

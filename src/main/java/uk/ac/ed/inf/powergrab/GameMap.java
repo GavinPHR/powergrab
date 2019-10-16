@@ -1,4 +1,5 @@
 package uk.ac.ed.inf.powergrab;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import com.google.gson.JsonElement;
@@ -7,16 +8,33 @@ import com.mapbox.geojson.*;
 
 public class GameMap {
     private KDTree<Station> stations;  
+    private String json;
+    public String[] mainLog = new String[250];
+    public double[] longitudeHistory = new double[251];
+    public double[] latitudeHistory = new double[251];
+
     
     public GameMap(String url) throws Exception {
         IO io = new IO();
-        String json = io.retrieveJson(url);
+        this.json = io.retrieveJson(url);
         this.stations = this.makeTree(this.jsonToStations(json));
     }
     
     public Station nearestStation(Position pos) {
         double[] co = {pos.latitude, pos.longitude};
         return this.stations.nearest(co);
+    }
+    
+    // currently using String for testing should be void
+    public String writeOut() {
+        IO io = new IO();
+        List<Point> points = new ArrayList<Point>(251);
+        for (int i = 0; i < 251; i++) {
+            Point p = Point.fromLngLat(longitudeHistory[i], latitudeHistory[i]);
+            points.add(p);
+        }
+        LineString ls = LineString.fromLngLats(points);
+        return ls.toJson();
     }
     
     private Station[] jsonToStations(String json) {
