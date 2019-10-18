@@ -11,15 +11,17 @@ import com.mapbox.geojson.*;
 public class GameMap {
     private KDTree<Station> stations;  
     private List<Feature> fs;
+    public Station[] positiveStations;
     public String[] mainLog = new String[250];
     public double[] longitudeHistory = new double[251];
     public double[] latitudeHistory = new double[251];
-
     
     public GameMap(String url) throws Exception {
         IO io = new IO();
         String json = io.retrieveJson(url);
-        this.stations = this.makeTree(this.jsonToStations(json));
+        Station[] allStations = this.jsonToStations(json);
+        this.stations = this.makeTree(allStations);
+        this.positiveStations = this.getPositiveStations(allStations);
     }
     
     public Station nearestStation(Position pos) {
@@ -59,6 +61,17 @@ public class GameMap {
             }
         }
         return stations;
+    }
+    
+    // For stateful drone
+    private Station[] getPositiveStations(Station[] allStations) {
+        List<Station> positiveStations = new ArrayList<Station>(50);
+        for (Station station : allStations) {
+            if (station.isPositive) {
+                positiveStations.add(station);
+            }
+        }
+        return positiveStations.toArray(new Station[positiveStations.size()]);
     }
     
     private Station makeStation(Feature f) {

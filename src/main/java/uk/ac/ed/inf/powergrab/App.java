@@ -31,10 +31,11 @@ public class App {
             StatelessDrone sd = new StatelessDrone(pos, map, param.seed);
             while (sd.move());
         } else if (param.state.equals("stateful")) {
-            // Add thins here for stateful;
+            StatefulDrone sd = new StatefulDrone(pos, map, param.seed);
+            while (sd.move());
         } else {
             System.err.println("Only stateless and stateful drones are supported.");
         }
-        //map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
+        map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
     }
 }

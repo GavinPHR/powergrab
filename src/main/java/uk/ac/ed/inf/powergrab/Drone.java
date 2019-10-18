@@ -1,17 +1,21 @@
 package uk.ac.ed.inf.powergrab;
 
+import java.util.Random;
+
 public abstract class Drone {
     Position currentPosition;
     float coins = 0, power = 250;
     final GameMap map;
     int moveCount = 0;
+    public Random rand;
     
-    public Drone(Position pos, GameMap map) {
+    public Drone(Position pos, GameMap map, long seed) {
         // Initial pos from command
         this.currentPosition = pos;
         this.map = map;
         map.longitudeHistory[0] = pos.longitude;
         map.latitudeHistory[0] = pos.latitude;
+        rand = new Random(seed);
     }
     
     public abstract Direction selectMove();
@@ -24,8 +28,7 @@ public abstract class Drone {
         logEntry[0] = Double.toString(currentPosition.latitude);
         logEntry[1] = Double.toString(currentPosition.longitude);
         logEntry[2] = d.toString();
-        currentPosition.longitude+= d.getHorizontal();
-        currentPosition.latitude += d.getVertical();
+        currentPosition = currentPosition.nextPosition(d);
         logEntry[3] = Double.toString(currentPosition.latitude);
         logEntry[4] = Double.toString(currentPosition.longitude);
         power -= 1.25;
@@ -40,10 +43,13 @@ public abstract class Drone {
     }
     
     public int checkMove(Direction d) {
-        Position pos = new Position(currentPosition, d.getHorizontal(), d.getVertical());
+        Position pos = currentPosition.nextPosition(d); 
         if (!pos.inPlayArea()) return -1;
-        else if (map.nearestStation(pos).isPositive) return 1;
-        else return 0;
+        Station nS = map.nearestStation(pos);
+        if (Position.withinRange(nS.pos, pos) && !nS.isPositive) {
+            return 0;
+        }
+        else return 1;
     }
     
     // Charges if there is a station in range
