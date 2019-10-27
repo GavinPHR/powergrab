@@ -21,7 +21,7 @@ public class App {
     };
     
     public static void main(String[] arg) throws Exception {
-        String[] args = {"15", "09", "2019", "55.9444425", "-3.188396", "5678", "stateful"};
+        String[] args = {"01", "02", "2019", "55.9444425", "-3.188396", "5678", "stateful"};
         App param = new App(args);
         String url = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/"
                 + "%d/%02d/%02d/powergrabmap.geojson", param.yyyy, param.mm, param.dd);

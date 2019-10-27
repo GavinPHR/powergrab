@@ -35,7 +35,6 @@ public class StatefulDrone extends Drone {
         }
         System.out.println(target.coins);
         if (target.coins == 0) {
-            System.out.println("hahah");
             visitedStations.add(target);
             Station tmp = nearestUnvisited();
             if (tmp == null) {
@@ -44,7 +43,27 @@ public class StatefulDrone extends Drone {
                 target = tmp;
             }
         }
-        return Position.roughDirectionTo(currentPosition, target.pos);
+        Direction bestMove = Position.roughDirectionTo(currentPosition, target.pos);
+        Map<Integer, Direction> positive, negative;
+        positive = new HashMap<Integer,Direction>(16);
+        negative = new HashMap<Integer,Direction>(16);
+        for (Direction d : directions) {
+            int result = checkMove(d);
+            if (result == 1) {
+                positive.put(positive.size(), d);
+            } else if (result == 0) {
+                negative.put(negative.size(), d);
+            } else {
+                continue;
+            }
+        }
+        if (positive.isEmpty()) {
+            return negative.get(rand.nextInt(negative.size()));
+        } else if (positive.values().contains(bestMove)) {
+            return bestMove;
+        } else {
+            return positive.get(rand.nextInt(positive.size()));
+        }
     }
     
     public Direction statelessMove() {

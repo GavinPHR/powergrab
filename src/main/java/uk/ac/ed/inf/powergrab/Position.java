@@ -34,10 +34,9 @@ public class Position {
             i++;
         }
         if (Math.abs(deg - i * 22.5) < (deg - i * 22.5 + 22.5)) {
-            return Direction.values()[i];
-        } else {
-            return Direction.values()[i - 1];
+            return Direction.values()[i % 16];
         }
+        return Direction.values()[i - 1];
     }
     
     public Position(double latitude, double longitude) {
