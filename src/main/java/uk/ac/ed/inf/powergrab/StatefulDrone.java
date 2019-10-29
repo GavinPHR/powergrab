@@ -11,6 +11,7 @@ public class StatefulDrone extends Drone {
     Station target;
     Set<Station> visitedStations = new HashSet<Station>(50);
     private static final Direction[] directions = Direction.values();
+    private int segmentCount = 0;
     
     public StatefulDrone(Position pos, GameMap map, long seed) {
         super(pos, map, seed);
@@ -33,8 +34,8 @@ public class StatefulDrone extends Drone {
         if (target == null) {
             return statelessMove();
         }
-        System.out.println(target.coins);
         if (target.coins == 0) {
+            segmentCount = 0;
             visitedStations.add(target);
             Station tmp = nearestUnvisited();
             if (tmp == null) {
@@ -57,8 +58,13 @@ public class StatefulDrone extends Drone {
                 continue;
             }
         }
+        segmentCount++;
+        System.out.println(segmentCount);
         if (positive.isEmpty()) {
             return negative.get(rand.nextInt(negative.size()));
+        } else if (segmentCount > 30) {
+            segmentCount = 25;
+            return positive.get(rand.nextInt(positive.size()));
         } else if (positive.values().contains(bestMove)) {
             return bestMove;
         } else {
