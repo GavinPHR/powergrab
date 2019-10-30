@@ -20,41 +20,41 @@ public class App {
         state = args[6];
     };
     
-    public static void main(String[] arg) throws Exception {
-        for (int i = 1; i <= 12; i++) {
-            String[] args = {String.format("%02d", i), String.format("%02d", i), "2019","55.9444425", "-3.188396", "5678", "stateless"};
-            App param = new App(args);
-            String url = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/"
-                    + "%d/%02d/%02d/powergrabmap.geojson", param.yyyy, param.mm, param.dd);
-            GameMap map = new GameMap(url);
-            Position pos = new Position(param.latitude, param.longitude);
-            if (param.state.equals("stateless")) {
-                StatelessDrone sd = new StatelessDrone(pos, map, param.seed);
-                while (sd.move());
-            } else if (param.state.equals("stateful")) {
-                StatefulDrone sd = new StatefulDrone(pos, map, param.seed);
-                while (sd.move());
-            } else {
-                System.err.println("Only stateless and stateful drones are supported.");
-            }
-            map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
-        }
-//        String[] args = {"12", "12", "2019", "55.9444425", "-3.188396", "5678", "stateful"};
-//        App param = new App(args);
-//        String url = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/"
-//                + "%d/%02d/%02d/powergrabmap.geojson", param.yyyy, param.mm, param.dd);
-//        GameMap map = new GameMap(url);
-//        Position pos = new Position(param.latitude, param.longitude);
-//        if (param.state.equals("stateless")) {
-//            StatelessDrone sd = new StatelessDrone(pos, map, param.seed);
-//            while (sd.move());
-//        } else if (param.state.equals("stateful")) {
-//            StatefulDrone sd = new StatefulDrone(pos, map, param.seed);
-//            while (sd.move());
-//        } else {
-//            System.err.println("Only stateless and stateful drones are supported.");
+    public static void main(String[] args) throws Exception {
+//        for (int i = 1; i <= 12; i++) {
+//            String[] args = {String.format("%02d", i), String.format("%02d", i), "2019","55.9444425", "-3.188396", "5678", "stateful"};
+//            App param = new App(args);
+//            String url = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/"
+//                    + "%d/%02d/%02d/powergrabmap.geojson", param.yyyy, param.mm, param.dd);
+//            GameMap map = new GameMap(url);
+//            Position pos = new Position(param.latitude, param.longitude);
+//            if (param.state.equals("stateless")) {
+//                StatelessDrone sd = new StatelessDrone(pos, map, param.seed);
+//                while (sd.move());
+//            } else if (param.state.equals("stateful")) {
+//                StatefulDrone sd = new StatefulDrone(pos, map, param.seed);
+//                while (sd.move());
+//            } else {
+//                System.err.println("Only stateless and stateful drones are supported.");
+//            }
+//            map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
 //        }
-//        map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
+//        String[] args = {"12", "12", "2019", "55.9444425", "-3.188396", "5678", "stateful"};
+        App param = new App(args);
+        String url = String.format("http://homepages.inf.ed.ac.uk/stg/powergrab/"
+                + "%d/%02d/%02d/powergrabmap.geojson", param.yyyy, param.mm, param.dd);
+        GameMap map = new GameMap(url);
+        Position pos = new Position(param.latitude, param.longitude);
+        if (param.state.equals("stateless")) {
+            StatelessDrone sd = new StatelessDrone(pos, map, param.seed);
+            while (sd.move());
+        } else if (param.state.equals("stateful")) {
+            StatefulDrone sd = new StatefulDrone(pos, map, param.seed);
+            while (sd.move());
+        } else {
+            System.err.println("Only stateless and stateful drones are supported.");
+        }
+        map.writeOut(String.join("-", new String[] {param.state, args[0], args[1], args[2]}));
         
     }
 }

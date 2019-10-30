@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class StatefulDrone extends Drone {
+public class StatefulDrone extends StatelessDrone {
     Station[] positiveStations;
     Station target;
     Set<Station> visitedStations = new HashSet<Station>(50);
@@ -30,6 +30,7 @@ public class StatefulDrone extends Drone {
         return null;
     }
     
+    @Override
     public Direction selectMove() {
         if (target == null) {
             return statelessMove();
@@ -39,7 +40,7 @@ public class StatefulDrone extends Drone {
             visitedStations.add(target);
             Station tmp = nearestUnvisited();
             if (tmp == null) {
-                return statelessMove();
+                return super.selectMove();
             } else {
                 target = tmp;
             }
@@ -59,7 +60,6 @@ public class StatefulDrone extends Drone {
             }
         }
         segmentCount++;
-        System.out.println(segmentCount);
         if (positive.isEmpty()) {
             return negative.get(rand.nextInt(negative.size()));
         } else if (segmentCount > 30) {
