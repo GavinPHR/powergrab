@@ -1,16 +1,23 @@
 package uk.ac.ed.inf.powergrab;
+
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 
+/*
+ * This class handles all input/output
+ * In powergrab, IO actions consist of map retrieval and writing out files
+ */
 public class IO {
-    // Download the map from informatics webserver and return it as a FeatureCollection
-    public String retrieveJson(String url) throws Exception {
+    // Download the map from Informatics webserver and return it as a String
+    public String retrieveJson(String url) throws IOException {
+        // Open Connection
         URL mapURL = new URL(url);
         URLConnection conn = mapURL.openConnection();
-        conn.setReadTimeout(10000); //10s
+        conn.setReadTimeout(10000); 
         conn.setConnectTimeout(15000);
         
+        // Retrieve content byte by byte
         ArrayList<Byte> contentList = new ArrayList<Byte>();
         InputStream input = conn.getInputStream();
         int c = input.read();
@@ -22,25 +29,14 @@ public class IO {
         for (int i = 0; i < contentList.size(); i++) {
             contentArray[i] = contentList.get(i);
         }
-        return new String(contentArray);
+        return new String(contentArray);  // Convert bytes to a String
     }
     
-    public void writeToFile(String content, String filename) throws UnsupportedEncodingException, FileNotFoundException {
+    // Write a string to a file in current working directory
+    public void writeToFile(String content, String filename) throws FileNotFoundException {
         PrintWriter writer = new PrintWriter(filename);
         writer.println(content);
         writer.close();
     }
         
-//    public void writeOut;
-    public static void main(String[] args) throws Exception {
-        String url = "http://homepages.inf.ed.ac.uk/stg/powergrab/2019/01/01/powergrabmap.geojson";
-        IO m = new IO();
-        try {
-            System.out.println(m.retrieveJson(url));
-            System.out.println("done");
-        } catch (Exception e) {
-            System.out.println("Something went wrong");
-        }
-            
-    }
 }

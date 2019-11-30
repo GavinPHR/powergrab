@@ -1,0 +1,27 @@
+#surefire
+#Thu Nov 28 16:07:37 GMT 2019
+classPathUrl.4=/Users/phr/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar
+testSuiteDefinitionTestSourceDirectory=/Users/phr/eclipse-workspace/powergrab/src/test/java
+includes1=**/*Test.java
+classPathUrl.5=/Users/phr/.m2/repository/com/harium/storage/kdtree/1.0.0/kdtree-1.0.0.jar
+includes2=**/*TestCase.java
+runOrder=filesystem
+includes0=**/Test*.java
+reportsDirectory=/Users/phr/eclipse-workspace/powergrab/target/surefire-reports
+tc.0=uk.ac.ed.inf.powergrab.AppTest
+surefireClassPathUrl.0=/Users/phr/.m2/repository/org/apache/maven/surefire/surefire-junit3/2.12.4/surefire-junit3-2.12.4.jar
+classPathUrl.0=/Users/phr/eclipse-workspace/powergrab/target/test-classes
+classPathUrl.1=/Users/phr/eclipse-workspace/powergrab/target/classes
+classPathUrl.2=/Users/phr/.m2/repository/com/mapbox/mapboxsdk/mapbox-sdk-geojson/4.9.0/mapbox-sdk-geojson-4.9.0.jar
+classPathUrl.3=/Users/phr/.m2/repository/com/google/code/gson/gson/2.8.5/gson-2.8.5.jar
+testClassesDirectory=/Users/phr/eclipse-workspace/powergrab/target/test-classes
+useManifestOnlyJar=true
+runStatisticsFile=/Users/phr/eclipse-workspace/powergrab/.surefire-D395D68E426BF6DEA59887F819C74BEA41B1E62A
+providerConfiguration=org.apache.maven.surefire.junit.JUnit3Provider
+failIfNoTests=false
+isTrimStackTrace=true
+surefireClassPathUrl.1=/Users/phr/.m2/repository/org/apache/maven/surefire/surefire-api/2.12.4/surefire-api-2.12.4.jar
+excludes0=**/*$*
+enableAssertions=true
+childDelegation=false
+useSystemClassLoader=true

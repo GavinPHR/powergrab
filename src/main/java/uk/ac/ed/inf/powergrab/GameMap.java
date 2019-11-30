@@ -1,5 +1,7 @@
 package uk.ac.ed.inf.powergrab;
+
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,15 +10,31 @@ import com.google.gson.JsonElement;
 import com.harium.storage.kdtree.KDTree;
 import com.mapbox.geojson.*;
 
+/*
+ * Class that constructs the map of a game
+ * The map is converted into a 2-Dimensional Tree for quick nearest neighbour lookup
+ * It keeps track of the drone's status (flight path, coins, power)
+ */
 public class GameMap {
     private KDTree<Station> stations;  
     private List<Feature> fs;
+    // An array of positive stations (with coins >=0)
     public Station[] positiveStations;
-    public String[] mainLog = new String[250];
-    public double[] longitudeHistory = new double[251];
-    public double[] latitudeHistory = new double[251];
+    // Below are the logs for the drone to write in
+    // The logs will be written out at the end
+    private final int totalMove = 250;
+    public String[] mainLog = new String[totalMove];
+    public double[] longitudeHistory = new double[totalMove + 1];
+    public double[] latitudeHistory = new double[totalMove + 1];
     
-    public GameMap(String url) throws Exception {
+    // Log an entry of the mainLog and longitude/latitude History
+    public void log(int index, String logEntry, double latitude, double longitude) throws ArrayIndexOutOfBoundsException { 
+        mainLog[index] = logEntry;
+        latitudeHistory[index + 1] = latitude;
+        longitudeHistory[index + 1] = longitude;
+    }
+    // Construct a map given the map URL 
+    public GameMap(String url) throws IOException {
         IO io = new IO();
         String json = io.retrieveJson(url);
         Station[] allStations = this.jsonToStations(json);
@@ -24,46 +42,47 @@ public class GameMap {
         this.positiveStations = this.getPositiveStations(allStations);
     }
     
+    // Getter for nearest station from a position
     public Station nearestStation(Position pos) {
         double[] co = {pos.latitude, pos.longitude};
         return this.stations.nearest(co);
     }
     
-    // currently using String for testing should be void
-    // write to txt not yet implemented
+    // Write out the required txt and geojson files
     public void writeOut(String filename) throws UnsupportedEncodingException, FileNotFoundException {
         List<Point> points = new ArrayList<Point>(251);
         for (int i = 0; i < 251; i++) {
             Point p = Point.fromLngLat(longitudeHistory[i], latitudeHistory[i]);
             points.add(p);
         }
+        // Add the flight path to the FeatureCollection
         LineString ls = LineString.fromLngLats(points);
         fs.add(Feature.fromGeometry(ls));
+        // Write out the files
         IO io = new IO();
         io.writeToFile(FeatureCollection.fromFeatures(fs).toJson(), filename + ".geojson");
         io.writeToFile(String.join("\n", mainLog), filename + ".txt");
         return;
     }
     
+    // Turn a json string into an array of Station
     private Station[] jsonToStations(String json) {
         FeatureCollection fc = FeatureCollection.fromJson(json);
         fs = fc.features();
         Iterator<Feature> iterator = fs.iterator();
         Station[] stations = new Station[50];
         int i = 0;
+        // Iterate all the Feature from the FeatureCollection
+        // Turning each of them into a Station object
         while (iterator.hasNext()) {
-            Station s = this.makeStation(iterator.next());
-            try {
-                stations[i] = s;
-                i++;
-            } catch (Exception e) {
-                System.err.println(e);
-            }
+            Station s = makeStation(iterator.next());
+            stations[i] = s;
+            i++;
         }
         return stations;
     }
     
-    // For stateful drone
+    // Input all the stations, return the ones that are positive (with coins >= 0)
     private Station[] getPositiveStations(Station[] allStations) {
         List<Station> positiveStations = new ArrayList<Station>(50);
         for (Station station : allStations) {
@@ -74,6 +93,7 @@ public class GameMap {
         return positiveStations.toArray(new Station[positiveStations.size()]);
     }
     
+    // Input a Feature, return a corresponding Station object
     private Station makeStation(Feature f) {
         // Get coins value
         JsonElement elem = f.getProperty("coins");
@@ -88,6 +108,7 @@ public class GameMap {
         return new Station(pos, coins, power);
     }
     
+    // Make a 2-Dimensional Tree of Stations from an array of Stations
     private KDTree<Station> makeTree(Station[] stations) {
         KDTree<Station> kd = new KDTree<Station>(2);
         double[] co = new double[2];
@@ -101,14 +122,5 @@ public class GameMap {
             }
         }
         return kd;
-    }
-    
-    public static void main(String[] args) throws Exception {
-        String url = "http://homepages.inf.ed.ac.uk/stg/powergrab/2019/01/01/powergrabmap.geojson";
-        GameMap m = new GameMap(url);
-        System.out.println("map done");
-        Position p = new Position(55.94605783989288,-3.1842541694641113);
-        Station n = m.nearestStation(p);
-        System.out.println(n.pos.latitude+" "+n.pos.longitude);
     }
 }
