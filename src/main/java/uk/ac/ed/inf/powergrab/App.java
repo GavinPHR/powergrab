@@ -27,7 +27,7 @@ public class App {
     };
     
     public static void main(String[] args) throws Exception {
-//        args = new String[] {"16", "09", "2019", "55.944425", "-3.188396", "5678", "stateless"};        
+        args = new String[] {"16", "09", "2019", "55.944425", "-3.188396", "5678", "stateless"};        
         try {
             // Parses parameter
             App param = new App(args);

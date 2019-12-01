@@ -18,19 +18,19 @@ import java.util.Random;
 */
 public class StatelessDrone {
     // The drone's status, not used for move strategy
-    Position currentPosition;
-    float coins = 0, power = 250;
+    protected Position currentPosition;
+    protected float coins = 0, power = 250;
     // The map of this game
-    final GameMap map;
+    protected final GameMap map;
     // moveCount, used for
     //   - stopping the game when it reaches 250
     //   - logging the flight path
-    int moveCount = 0;
+    protected int moveCount = 0;
     // Random number generator for state-less move strategy
-    public Random rand;
+    protected Random rand;
 
     // Constructor given initial position, the game's map, and a random seed
-    public StatelessDrone(Position pos, GameMap map, long seed) {
+    protected StatelessDrone(Position pos, GameMap map, long seed) {
         this.currentPosition = pos;
         this.map = map;
         map.longitudeHistory[0] = pos.longitude;
@@ -39,7 +39,7 @@ public class StatelessDrone {
     }
     
     // Select the next move (a direction) using a state-less strategy
-    public Direction selectMove() {
+    protected Direction selectMove() {
         Map<Integer, Direction> positive, negative;
         // Add the directions that contains negative stations in a negative set
         // And every other direction in a positive set
@@ -63,7 +63,7 @@ public class StatelessDrone {
         }
      }
     
-    public boolean move() {
+    protected boolean move() {
         if (moveCount >= 250 || power < 1.25) return false;
         // An array to store log information
         String[] logEntry = new String[7]; 
@@ -87,7 +87,7 @@ public class StatelessDrone {
     // If the drone is in range of a negative stations (coins < 0)
     // after a move (given a direction to move in), return 0
     // Otherwise return 1
-    public int checkMove(Direction d) {
+    protected int checkMove(Direction d) {
         Position pos = currentPosition.nextPosition(d); 
         if (!pos.inPlayArea()) return -1;
         Station nS = map.nearestStation(pos);
@@ -98,7 +98,7 @@ public class StatelessDrone {
     }
     
     // Charges if there is a station in range
-    public void charge() {
+    protected void charge() {
         Station nearestStation = map.nearestStation(currentPosition);
         if (Position.withinRange(nearestStation.pos, currentPosition)) {
             float[] values = nearestStation.discharge();

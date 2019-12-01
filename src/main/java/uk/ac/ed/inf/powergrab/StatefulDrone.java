@@ -68,6 +68,7 @@ public class StatefulDrone extends StatelessDrone {
         if (target == null) {
             return super.selectMove();
         }
+        
         // If the target is visited, switch target
         if (target.coins == 0) {
             // Reset segmentCount
@@ -82,12 +83,14 @@ public class StatefulDrone extends StatelessDrone {
                 target = newTarget;
             }
         }
+        
         // If the drone moved 20 times and didn't succeed in reaching the target
         // get a random target and resume
         if (segmentCount > 20) {
             segmentCount = 0;
             target = randomUnvisited();
         }
+        
         // Determine what the best direction to move in
         Direction bestMove = Position.roughDirectionTo(currentPosition, target.pos);
         // Find positive and negative directions
@@ -104,6 +107,7 @@ public class StatefulDrone extends StatelessDrone {
                 continue;
             }
         }
+        
         // Increase the segmentCount before returning
         segmentCount++;
         // If all the moves are negative, choose a random one
