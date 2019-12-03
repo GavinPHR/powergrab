@@ -23,8 +23,7 @@ public class Position {
     
     // Method used to determine if the drone is in range of a charging station
     public static boolean withinRange(Position a, Position b) {
-        double distance = distance(a, b);
-        return distance < 0.00025;
+        return distance(a, b) < 0.00025;
     }
     
     // Determines (roughly) which direction the drone needs to travel to reach a position

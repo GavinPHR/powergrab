@@ -22,10 +22,9 @@ public class GameMap {
     public Station[] positiveStations;
     // Below are the logs for the drone to write in
     // The logs will be written out at the end
-    private final int totalMove = 250;
-    public String[] mainLog = new String[totalMove];
-    public double[] longitudeHistory = new double[totalMove + 1];
-    public double[] latitudeHistory = new double[totalMove + 1];
+    public String[] mainLog = new String[StatelessDrone.totalMove];
+    public double[] longitudeHistory = new double[StatelessDrone.totalMove + 1];
+    public double[] latitudeHistory = new double[StatelessDrone.totalMove + 1];
     
     // Log an entry of the mainLog and longitude/latitude History
     public void log(int index, String logEntry, double latitude, double longitude) throws ArrayIndexOutOfBoundsException { 
@@ -113,13 +112,9 @@ public class GameMap {
         KDTree<Station> kd = new KDTree<Station>(2);
         double[] co = new double[2];
         for (Station station : stations) {
-            try {
-                co[0] = station.pos.latitude;
-                co[1] = station.pos.longitude;
-                kd.insert(co, station);
-            } catch (Exception e) {
-                System.err.println(e);
-            }
+            co[0] = station.pos.latitude;
+            co[1] = station.pos.longitude;
+            kd.insert(co, station);     
         }
         return kd;
     }

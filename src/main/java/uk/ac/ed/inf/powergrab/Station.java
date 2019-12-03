@@ -5,10 +5,10 @@ package uk.ac.ed.inf.powergrab;
  * It characterises a station's status completely
 */
 public class Station {
-    Position pos;
-    boolean isPositive = true;  // A station is positive if coins >= 0
-    float coins;
-    float power;
+    public final Position pos;
+    public boolean isPositive = true;  // A station is positive if coins >= 0
+    public float coins;
+    public float power;
     
     // Constructor for Station given positon, coins, and power
     public Station(Position pos, float coins, float power) {

@@ -63,7 +63,7 @@ public class StatefulDrone extends StatelessDrone {
     // Override superclass (state-less) selectMove
     // Now using global knowledge
     @Override
-    public Direction selectMove() {
+    protected Direction selectMove() {
         // If all positive stations are visited, fallback to state-less move
         if (target == null) {
             return super.selectMove();

@@ -10,8 +10,8 @@ import java.io.IOException;
 public class App {
     private final int dd, mm, yyyy;
     private final double latitude, longitude;
-    private long seed;
-    private String state;
+    private final long seed;
+    private final String state;
     // Constructor that parses the input arguments
     private App(String[] args) {
         dd = Integer.parseInt(args[0]);
@@ -27,7 +27,7 @@ public class App {
     };
     
     public static void main(String[] args) throws Exception {
-        args = new String[] {"16", "09", "2019", "55.944425", "-3.188396", "5678", "stateless"};        
+//        args = new String[] {"15", "09", "2019", "55.944425", "-3.188396", "5678", "stateful"};        
         try {
             // Parses parameter
             App param = new App(args);

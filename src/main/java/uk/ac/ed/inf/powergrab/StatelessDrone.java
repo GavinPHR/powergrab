@@ -28,6 +28,8 @@ public class StatelessDrone {
     protected int moveCount = 0;
     // Random number generator for state-less move strategy
     protected Random rand;
+    // Number of moves allowed
+    protected final static int totalMove = 250;
 
     // Constructor given initial position, the game's map, and a random seed
     protected StatelessDrone(Position pos, GameMap map, long seed) {
@@ -64,7 +66,7 @@ public class StatelessDrone {
      }
     
     protected boolean move() {
-        if (moveCount >= 250 || power < 1.25) return false;
+        if (moveCount >= totalMove || power < 1.25) return false;
         // An array to store log information
         String[] logEntry = new String[7]; 
         Direction d = selectMove();
